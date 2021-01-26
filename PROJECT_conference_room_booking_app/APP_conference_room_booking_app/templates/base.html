@@ -2,22 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <title>Conference Room Booking</title>
 </head>
 <body>
-<section>
-    <nav>
-        <ul>
-            <li>
-                <a href=""> Lista sal </a>
-                <a href=""> Dodaj sale </a>
-            </li>
-        </ul>
-    </nav>
-</section>
+
     {% block content %}
+    <input type="button" value="Dodaj sale" onClick="location.href='room/new/';" />
 
     {% endblock %}
+<footer>
+    Autor: Andrzej Jończy
+    <p>wszelkie prawa zastrzeżone</p>
+</footer>
 </body>
 </html>

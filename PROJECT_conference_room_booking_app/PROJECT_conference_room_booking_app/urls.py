@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from APP_conference_room_booking_app import views as booking_room
 
 urlpatterns = [
-    path('admin/', admin.site.urls, 'admin'),
-    path('', admin.site.urls, 'start_page'),
+    path('admin/', admin.site.urls, name='admin'),
+    path('', booking_room.start_page, name='start_page'),
+    path('room/new/', booking_room.AddNewRoomView.as_view(), name='add_room'),
 ]
