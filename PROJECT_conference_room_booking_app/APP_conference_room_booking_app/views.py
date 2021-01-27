@@ -1,12 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.base import View
 
 from .forms import RoomForm
 from .models import Room
 
 
-def start_page(request):
-    return render(request, 'base.html')
+class StartPageView(View):
+
+    def get(self, request):
+        return render(request, 'base.html')
 
 
 class AddNewRoomView(View):
@@ -38,7 +40,7 @@ class AddNewRoomView(View):
 class ListOfRoomsView(View):
 
     def get(self, request, *args, **kwargs):
-        conference_rooms = Room.objects.all().values()
+        conference_rooms = Room.objects.all()
         if not conference_rooms:
             message = 'Brak dostępnych sal'
         else:
@@ -52,17 +54,21 @@ class ListOfRoomsView(View):
 
 class DeleteRoomView(View):
 
-     def get(self, request):
-         pass
-
-     def post(self, request):
-         pass
+    def get(self, request, id_room):
+        room = get_object_or_404(Room, pk=id_room)
+        room.delete()
+        return ListOfRoomsView.get(self, request)
 
 
 class ModifyRoomView(View):
 
-    def get(self, request):
-        pass
+    def get(self, request, id_room):
+        room = Room.objects.get(pk=id_room)
+        form = RoomForm(instance=room)
+        context = {
+            'form': form,
+        }
+        return render(request, '')
 
     def post(self, request):
         pass

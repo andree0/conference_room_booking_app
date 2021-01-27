@@ -19,7 +19,7 @@ from APP_conference_room_booking_app import views as booking_room
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('', booking_room.start_page, name='start_page'),
+    path('', booking_room.StartPageView.as_view(), name='start_page'),
     path('room/new/', booking_room.AddNewRoomView.as_view(), name='add_room'),
     path('rooms/', booking_room.ListOfRoomsView.as_view(), name='list_of_rooms'),
     path('room/<int:id_room>/', booking_room.DetailsRoomView.as_view(), name='details_room'),
