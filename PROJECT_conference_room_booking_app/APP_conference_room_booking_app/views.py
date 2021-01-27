@@ -89,22 +89,23 @@ class ModifyRoomView(View):
 
 class ReserveRoomView(View):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, id_room, *args, **kwargs):
+        room = Room.objects.get(pk=id_room)
         form = BookingForm()
         context = {
             'form': form,
+            'room_name': room.name
         }
-        return render(request, 'add_new_room.html', context=context)
+        return render(request, 'reserve_room.html', context=context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, id_room, *args, **kwargs):
+        room = Room.objects.get(pk=id_room)
         form = BookingForm(request.POST)
         if form.is_valid():
             date_of_booking = form.cleaned_data['date_of_booking']
-            id_room = form.cleaned_data['id_room']
             comment = form.cleaned_data['comment']
-            new_booking = Booking.objects.create(date_of_booking=date_of_booking, id_room=id_room, comment=comment)
-            booked_room = Room.objects.get(pk=id_room)
-            message = f'Zarezerwowano sale: {booked_room.name} ' \
+            new_booking = Booking.objects.create(date_of_booking=date_of_booking, id_room=room, comment=comment)
+            message = f'Zarezerwowano sale: {room.name} ' \
                       f'na dzień {new_booking.date_of_booking}'
         else:
             message = 'Niepoprawne dane'

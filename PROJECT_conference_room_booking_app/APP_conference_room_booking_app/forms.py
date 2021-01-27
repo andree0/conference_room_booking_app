@@ -29,14 +29,12 @@ class BookingForm(forms.ModelForm):
     class Meta:
         ROOM_NAME = []
         model = Booking
-        fields = ('date_of_booking', 'id_room', 'comment')
+        fields = ('date_of_booking', 'comment')
         labels = {
             'date_of_booking': _('Data rezerwacji'),
-            'id_room': _('Sala konferencyjna'),
             'comment': _('Komentarz')
         }
 
         widgets = {
             'date_of_booking': forms.SelectDateWidget(),
-            'id_room': forms.Select(choices=Room.objects.all().values_list('name', flat=True)),
         }
