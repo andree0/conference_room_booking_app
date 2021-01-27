@@ -9,7 +9,7 @@ class Room(models.Model):
     projector = models.BooleanField(default=False)
 
 
-class BookingRoom(models.Model):
+class Booking(models.Model):
     date_of_booking = models.DateField()
     id_room = models.ForeignKey(Room, on_delete=models.CASCADE)
     comment = models.CharField(max_length=255, null=True, blank=True)

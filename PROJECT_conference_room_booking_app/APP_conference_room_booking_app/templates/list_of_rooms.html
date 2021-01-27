@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+        {% if message_2 %}
+            {{ message_2 }}
+        {% endif %}
+        <br>
 
         <table border cellpadding="10" frame="void" rules="all">
             <tr bgcolor="lightgray">
