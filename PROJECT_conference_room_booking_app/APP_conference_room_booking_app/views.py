@@ -1,3 +1,6 @@
+from datetime import date
+from sqlite3 import IntegrityError
+
 from django.shortcuts import get_object_or_404, render
 from django.views.generic.base import View
 
@@ -59,7 +62,7 @@ class DeleteRoomView(View):
         room = get_object_or_404(Room, pk=id_room)
         room.delete()
         message_2 = f"Usunięto sale: {room.name}"
-        return ListOfRoomsView.get(self, request, message_2=message_2)
+        return ListOfRoomsView.get(self, request, message_2)
 
 
 class ModifyRoomView(View):
@@ -104,16 +107,20 @@ class ReserveRoomView(View):
         if form.is_valid():
             date_of_booking = form.cleaned_data['date_of_booking']
             comment = form.cleaned_data['comment']
-            new_booking = Booking.objects.create(date_of_booking=date_of_booking, id_room=room, comment=comment)
-            message = f'Zarezerwowano sale: {room.name} ' \
-                      f'na dzień {new_booking.date_of_booking}'
+            if date_of_booking >= date.today():
+                try:
+                    new_booking = Booking.objects.create(date_of_booking=date_of_booking, id_room=room, comment=comment)
+                    message_2 = f'Zarezerwowano sale: {room.name} ' \
+                                f'na dzień {new_booking.date_of_booking}'
+                except Exception:
+                    message_2 = 'Sala konferencyjna jest już zajęta, wybierz inny dzień.'
+                    pass
+            else:
+                message_2 = 'Podana data już minęła'
         else:
-            message = 'Niepoprawne dane'
+            message_2 = 'Niepoprawne dane'
 
-        context = {
-            'message': message,
-        }
-        return render(request, 'base.html', context=context)
+        return ListOfRoomsView.get(self, request, message_2)
 
 
 class DetailsRoomView(View):

@@ -3,7 +3,6 @@ from datetime import datetime
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-
 from .models import Room, Booking
 
 
@@ -18,16 +17,14 @@ class RoomForm(forms.ModelForm):
         }
         widgets = {
             'capacity': forms.NumberInput(attrs={
-                            'type': 'number',
-                            'min': '2'
-                        })
-                        }
+                'type': 'number',
+                'min': '2'
+            })
+        }
 
 
 class BookingForm(forms.ModelForm):
-
     class Meta:
-        ROOM_NAME = []
         model = Booking
         fields = ('date_of_booking', 'comment')
         labels = {
