@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 
-from .models import Room, BookingRoom
+from .models import Room, Booking
 
 
 class RoomForm(forms.ModelForm):
@@ -27,7 +27,7 @@ class RoomForm(forms.ModelForm):
 class BookingForm(forms.ModelForm):
 
     class Meta:
-        model = BookingRoom
+        model = Booking
         fields = ('date_of_booking', 'id_room', 'comment')
         labels = {
             'date_of_booking': _('Data rezerwacji'),
