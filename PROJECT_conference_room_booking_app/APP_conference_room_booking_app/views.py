@@ -41,6 +41,8 @@ class ListOfRoomsView(View):
         conference_rooms = Room.objects.all().values()
         if not conference_rooms:
             message = 'Brak dostępnych sal'
+        else:
+            message = 'Lista sal konferencyjnych'
         context = {
             'conference_rooms': conference_rooms,
             'message': message,
@@ -48,3 +50,37 @@ class ListOfRoomsView(View):
         return render(request, 'list_of_rooms.html', context)
 
 
+class DeleteRoomView(View):
+
+     def get(self, request):
+         pass
+
+     def post(self, request):
+         pass
+
+
+class ModifyRoomView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class BookingRoomView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class DetailsRoomView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
