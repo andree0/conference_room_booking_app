@@ -7,7 +7,11 @@
 <body>
 
     {% block content %}
-    <input type="button" value="Dodaj sale" onClick="location.href='room/new/';" />
+        {% if message %}
+            {{ message }}
+        {% endif %}
+        <br><br>
+        <input type="button" value="Dodaj sale" onClick="location.href='{% url 'add_room' %}';" />
 
     {% endblock %}
 <footer>

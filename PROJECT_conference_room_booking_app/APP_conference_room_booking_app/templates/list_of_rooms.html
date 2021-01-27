@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Lista sal konferencyjnych</h2>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}}
+        <ul>
+        {% for room in conference_rooms %}
+            <li>
+                <a href="{% url 'details_room' %}">{{ room['name'] }}</a>
+                | {{ room['capacity'] }}
+                | {{ room['projector'] }}
+                | <input type="submit" value="edytuj" onClick="location.href='{% url 'modify_room' %};">
+                | <input type="submit" value="usuń" onClick="location.href='{% url 'delete_room' %};">
+                | <input type="submit" value="zarezerwuj" onClick="location.href='{% url 'reserve_room' %};">
+            </li>
+        {% endfor %}
+        </ul>
+{% endblock %}

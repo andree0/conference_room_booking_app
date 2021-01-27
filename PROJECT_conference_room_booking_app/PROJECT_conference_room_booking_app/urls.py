@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', booking_room.start_page, name='start_page'),
     path('room/new/', booking_room.AddNewRoomView.as_view(), name='add_room'),
+    path('room/new/', booking_room.ListOfRoomsView.as_view(), name='list_of_rooms'),
 ]

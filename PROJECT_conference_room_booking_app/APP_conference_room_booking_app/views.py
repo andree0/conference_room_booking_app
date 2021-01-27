@@ -33,3 +33,18 @@ class AddNewRoomView(View):
             'message': message,
         }
         return render(request, 'base.html', context=context)
+
+
+class ListOfRoomsView(View):
+
+    def get(self, request, *args, **kwargs):
+        conference_rooms = Room.objects.all().values()
+        if not conference_rooms:
+            message = 'Brak dostępnych sal'
+        context = {
+            'conference_rooms': conference_rooms,
+            'message': message,
+        }
+        return render(request, 'list_of_rooms.html', context)
+
+
