@@ -3,20 +3,41 @@
 {% block content %}
 
 <h2>Sala konferencyjna: {{ conference_room.name }}</h2>
-<h3>Pojemność sali: {{ conference_room.capacity }} | Dostępność rzutnika: {{ conference_room.projector }}
-| <input type="submit" value="edytuj"
-         onClick="location.href='{% url 'modify_room' room.pk %}';">
-| <input type="submit" value="usuń"
-           onClick="location.href='{% url 'delete_room' room.pk %}';">
-| <input type="submit" value="zarezerwuj"
-           onClick="location.href='{% url 'reserve_room' room.pk %}';">
+    <input type="submit" value="edytuj"
+         onClick="location.href='{% url 'modify_room' conference_room.pk %}';">
+    <input type="submit" value="usuń"
+           onClick="location.href='{% url 'delete_room' conference_room.pk %}';">
+    <input type="submit" value="zarezerwuj"
+           onClick="location.href='{% url 'reserve_room' conference_room.pk %}';">
+    <br>
+    <p>Pojemność sali: {{ conference_room.capacity }}</p>
+
+    <p>
+    Dostępność rzutnika:
+    {% if conference_room.projector is True %}
+    TAK
+    {% else %}
+    NIE
+    {% endif %}
+    </p>
+    <br>
 
     <ul>
-    {% reservation in all_booking_room %}
-        <li>
-            {{ reservation.date_of_booking }} | {{ reservation.comment }}
-        </li>
-    {% endfor %}
+        <h2>Lista rezerwacji: </h2>
+        {% if sorted_all_booking_room %}
+            {% for reservation in sorted_all_booking_room %}
+                <li>
+                    {{ reservation.0 }}
+                    {% if reservation.1 is None %}
+                    | Brak komentarza
+                    {% else %}
+                    {{ reservation.1 }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+        <p>Brak rezerwacji</p>
+        {% endif %}
     </ul>
 
 

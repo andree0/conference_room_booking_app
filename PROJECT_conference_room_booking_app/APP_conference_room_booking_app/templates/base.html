@@ -5,13 +5,12 @@
     <title>Conference Room Booking</title>
 </head>
 <body>
-        <br>
         <label for="list_of_rooms"></label>
-        <input id="list_of_rooms" type="submit" value="Lista sal"
-               onclick="location.href='{% url 'list_of_rooms' %}';" />
+        <h1><input id="list_of_rooms" type="submit" value="Lista sal"
+                   onclick="location.href='{% url 'list_of_rooms' %}';" />
         <input type="submit" value="Dodaj sale"
-               onclick="location.href='{% url 'add_room' %}';" />
-        <br><br>
+               onclick="location.href='{% url 'add_room' %}';" /></h1>
+
         {% if message %}
             <h2>{{ message }}</h2>
         {% endif %}

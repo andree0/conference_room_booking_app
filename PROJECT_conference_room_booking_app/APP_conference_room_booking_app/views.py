@@ -125,14 +125,16 @@ class ReserveRoomView(View):
 
 class DetailsRoomView(View):
 
-    def sorted_reservations(self,):
+    @staticmethod
+    def sorted_reservations(reservations):
+        return sorted(reservations, key=lambda x: x[0])
 
     def get(self, request, id_room, *args, **kwargs):
         conference_room = Room.objects.get(pk=id_room)
-        all_booking_room = Booking.objects.all().filter(id_room=conference_room)
-        sorted(all_booking_room, key=date)
+        all_booking_room = Booking.objects.all().filter(id_room=conference_room).values_list('date_of_booking', 'comment')
+        sorted_all_booking_room = self.sorted_reservations(all_booking_room)
         context = {
             'conference_room': conference_room,
-            'all_booking_room': all_booking_room,
+            'sorted_all_booking_room': sorted_all_booking_room,
         }
         return render(request, 'details_room.html', context)
