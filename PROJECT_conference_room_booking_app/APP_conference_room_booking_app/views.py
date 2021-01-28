@@ -125,8 +125,14 @@ class ReserveRoomView(View):
 
 class DetailsRoomView(View):
 
-    def get(self, request):
-        pass
+    def sorted_reservations(self,):
 
-    def post(self, request):
-        pass
+    def get(self, request, id_room, *args, **kwargs):
+        conference_room = Room.objects.get(pk=id_room)
+        all_booking_room = Booking.objects.all().filter(id_room=conference_room)
+        sorted(all_booking_room, key=date)
+        context = {
+            'conference_room': conference_room,
+            'all_booking_room': all_booking_room,
+        }
+        return render(request, 'details_room.html', context)
