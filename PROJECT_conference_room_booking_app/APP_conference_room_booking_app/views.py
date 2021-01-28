@@ -1,11 +1,10 @@
 from datetime import date
-from sqlite3 import IntegrityError
 
 from django.shortcuts import get_object_or_404, render
 from django.views.generic.base import View
 
-from .forms import RoomForm, BookingForm
-from .models import Room, Booking
+from .forms import BookingForm, RoomForm
+from .models import Booking, Room
 
 
 class StartPageView(View):
@@ -44,6 +43,7 @@ class ListOfRoomsView(View):
 
     def get(self, request, message_2=None, *args, **kwargs):
         conference_rooms = Room.objects.all()
+        bookings = Booking.objects.all()
         if not conference_rooms:
             message = 'Brak dostępnych sal'
         else:
@@ -52,6 +52,8 @@ class ListOfRoomsView(View):
             'conference_rooms': conference_rooms,
             'message': message,
             'message_2': message_2,
+            'date': date.today(),
+            'bookings': bookings,
         }
         return render(request, 'list_of_rooms.html', context)
 
@@ -68,7 +70,7 @@ class DeleteRoomView(View):
 class ModifyRoomView(View):
 
     def get(self, request, id_room):
-        room = Room.objects.get(pk=id_room)
+        room = get_object_or_404(Room, pk=id_room)
         form = RoomForm(instance=room)
         context = {
             'form': form,
@@ -76,7 +78,7 @@ class ModifyRoomView(View):
         return render(request, 'modify_room.html', context)
 
     def post(self, request, id_room):
-        room = Room.objects.get(pk=id_room)
+        room = get_object_or_404(Room, pk=id_room)
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
             room.name = form.cleaned_data['name']
@@ -93,7 +95,7 @@ class ModifyRoomView(View):
 class ReserveRoomView(View):
 
     def get(self, request, id_room, *args, **kwargs):
-        room = Room.objects.get(pk=id_room)
+        room = get_object_or_404(Room, pk=id_room)
         form = BookingForm()
         context = {
             'form': form,
@@ -102,7 +104,7 @@ class ReserveRoomView(View):
         return render(request, 'reserve_room.html', context=context)
 
     def post(self, request, id_room, *args, **kwargs):
-        room = Room.objects.get(pk=id_room)
+        room = get_object_or_404(Room, pk=id_room)
         form = BookingForm(request.POST)
         if form.is_valid():
             date_of_booking = form.cleaned_data['date_of_booking']
@@ -130,8 +132,9 @@ class DetailsRoomView(View):
         return sorted(reservations, key=lambda x: x[0])
 
     def get(self, request, id_room, *args, **kwargs):
-        conference_room = Room.objects.get(pk=id_room)
-        all_booking_room = Booking.objects.all().filter(id_room=conference_room).values_list('date_of_booking', 'comment')
+        conference_room = get_object_or_404(Room, pk=id_room)
+        all_booking_room = Booking.objects.all().filter(
+            id_room=conference_room).values_list('date_of_booking', 'comment')
         sorted_all_booking_room = self.sorted_reservations(all_booking_room)
         context = {
             'conference_room': conference_room,

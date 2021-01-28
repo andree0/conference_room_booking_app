@@ -11,18 +11,37 @@
                 <th>Nazwa<br> sali</th>
                 <th>Pojemność<br> sali</th>
                 <th>Dostępność<br> rzutnika</th>
+                <th>Aktualny<br> status</th>
             </tr>
         {% for room in conference_rooms %}
             <tr align="center">
                 <td><a href="{% url 'details_room' room.pk %}">{{ room.name }}</a></td>
                 <td>{{ room.capacity }}</td>
-                <td>{{ room.projector }}</td>
+                <td>
+                    {% if room.projector is True %}
+                    TAK
+                    {% else %}
+                    NIE
+                    {% endif %}
+                </td>
+                {% if bookings.room %}
+                    {% if bookings.1 == date %}
+                        <td>Zajęta</td>
+                    {% else %}
+                        <td>Dostępna</td>
+                    {% endif %}
+                {% else %}
+                <td></td>
+                {% endif %}
                 <td><input type="submit" value="edytuj"
                          onClick="location.href='{% url 'modify_room' room.pk %}';"></td>
                 <td><input type="submit" value="usuń"
                            onClick="location.href='{% url 'delete_room' room.pk %}';"></td>
                 <td><input type="submit" value="zarezerwuj"
                            onClick="location.href='{% url 'reserve_room' room.pk %}';"></td>
+
+
+
             </tr>
         {% endfor %}
         </table>
