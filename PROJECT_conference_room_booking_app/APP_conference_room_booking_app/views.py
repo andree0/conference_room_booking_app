@@ -143,3 +143,33 @@ class DetailsRoomView(View):
             'sorted_all_booking_room': sorted_all_booking_room,
         }
         return render(request, 'details_room.html', context)
+
+
+class SearchRoomView(View):
+
+    def get(self, request, message_2=None, *args, **kwargs):
+        capacity = request.GET.get('capacity')
+        projector = request.GET.get('projector')
+
+        conference_rooms = Room.objects.all()
+        rooms = []
+        for room in conference_rooms:
+            booking_dates = [booking.date_of_booking for booking in room.booking_set.all()]
+            room.reserved = date.today() in booking_dates
+            if room.reserved is False:
+                if capacity != '':
+                    if room.capacity >= int(capacity):
+                        if projector == 'on':
+                            if room.projector is True:
+                                rooms.append(room)
+
+        if not conference_rooms:
+            message = 'Brak dostępnych sal'
+        else:
+            message = 'Lista sal konferencyjnych'
+        context = {
+            'conference_rooms': rooms,
+            'message': message,
+            'message_2': message_2,
+        }
+        return render(request, 'list_of_rooms.html', context)

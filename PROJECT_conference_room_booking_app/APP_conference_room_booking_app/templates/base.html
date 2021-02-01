@@ -11,14 +11,23 @@
         <input type="submit" value="Dodaj sale"
                onclick="location.href='{% url 'add_room' %}';" /></h1>
 
+        <form action="search/" method="get">
+            <label for="capacity">Wymagana pojemność sali</label>
+                <input id="capacity" type="number" min="2" name="capacity">
+
+            <label for="projector">Rzutnik</label>
+                <input id="projector" type="checkbox" name="projector">
+
+            <input type="submit" value="Szukaj">
+        </form>
         {% if message %}
             <h2>{{ message }}</h2>
         {% endif %}
 
+            {% block content %}
 
-{% block content %}
+            {% endblock %}
 
-    {% endblock %}
 <footer class="footer">
       <div class="container">
         <span class="text-muted">
