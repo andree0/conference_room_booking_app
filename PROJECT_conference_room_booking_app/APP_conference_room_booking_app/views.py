@@ -43,7 +43,9 @@ class ListOfRoomsView(View):
 
     def get(self, request, message_2=None, *args, **kwargs):
         conference_rooms = Room.objects.all()
-        bookings = Booking.objects.all()
+        for room in conference_rooms:
+            booking_dates = [booking.date_of_booking for booking in room.booking_set.all()]
+            room.reserved = date.today() in booking_dates
         if not conference_rooms:
             message = 'Brak dostępnych sal'
         else:
@@ -52,8 +54,6 @@ class ListOfRoomsView(View):
             'conference_rooms': conference_rooms,
             'message': message,
             'message_2': message_2,
-            'date': date.today(),
-            'bookings': bookings,
         }
         return render(request, 'list_of_rooms.html', context)
 
@@ -97,9 +97,11 @@ class ReserveRoomView(View):
     def get(self, request, id_room, *args, **kwargs):
         room = get_object_or_404(Room, pk=id_room)
         form = BookingForm()
+        bookings = room.booking_set.all()
         context = {
             'form': form,
-            'room_name': room.name
+            'room_name': room.name,
+            'bookings': bookings
         }
         return render(request, 'reserve_room.html', context=context)
 

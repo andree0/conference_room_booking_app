@@ -24,23 +24,18 @@
                     NIE
                     {% endif %}
                 </td>
-                {% if bookings.room %}
-                    {% if bookings.1 == date %}
-                        <td>Zajęta</td>
-                    {% else %}
-                        <td>Dostępna</td>
-                    {% endif %}
+                {% if room.reserved is True %}
+                    <td>Zajęta</td>
                 {% else %}
-                <td></td>
+                    <td>Dostępna</td>
                 {% endif %}
+
                 <td><input type="submit" value="edytuj"
                          onClick="location.href='{% url 'modify_room' room.pk %}';"></td>
                 <td><input type="submit" value="usuń"
                            onClick="location.href='{% url 'delete_room' room.pk %}';"></td>
                 <td><input type="submit" value="zarezerwuj"
                            onClick="location.href='{% url 'reserve_room' room.pk %}';"></td>
-
-
 
             </tr>
         {% endfor %}

@@ -7,4 +7,21 @@
         {{ form.as_p }}
         <input type="submit" value="Dodaj">
     </form>
+    <ul>
+        <h2>Lista rezerwacji: </h2>
+        {% if bookings %}
+            {% for reservation in bookings %}
+                <li>
+                    {{ reservation.date_of_booking }}
+                    {% if reservation.comment is None %}
+                    | ----------------------
+                    {% else %}
+                    | {{ reservation.comment }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+        <p>Brak rezerwacji</p>
+        {% endif %}
+    </ul>
 {% endblock %}
