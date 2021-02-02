@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Conference Room Booking</title>
+      <style>
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px; /* Set the fixed height of the footer here */
+      line-height: 60px; /* Vertically center the text there */
+      background-color: #f5f5f5;
+    }
+  </style>
 </head>
 <body>
         <label for="list_of_rooms"></label>
@@ -11,29 +21,31 @@
         <input type="submit" value="Dodaj sale"
                onclick="location.href='{% url 'add_room' %}';" /></h1>
 
-        <form action="search/" method="get">
+        <form action="/search" method="GET">
+            <label for="name">Nazwa sali</label>
+                <input id="name" type="text" name="name">
+
             <label for="capacity">Wymagana pojemność sali</label>
-                <input id="capacity" type="number" min="2" name="capacity">
+                <input id="capacity" type="number" min="2" step="1" name="capacity">
 
             <label for="projector">Rzutnik</label>
                 <input id="projector" type="checkbox" name="projector">
 
             <input type="submit" value="Szukaj">
         </form>
+
         {% if message %}
             <h2>{{ message }}</h2>
         {% endif %}
 
-            {% block content %}
+{% block content %}
 
-            {% endblock %}
+{% endblock %}
 
 <footer class="footer">
       <div class="container">
-        <span class="text-muted">
             Autor: Andrzej Jończy
-         <p>wszelkie prawa zastrzeżone</p>
-        </span>
+         / wszelkie prawa zastrzeżone
       </div>
     </footer>
 </body>

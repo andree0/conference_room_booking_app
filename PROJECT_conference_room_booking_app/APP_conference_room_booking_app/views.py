@@ -148,27 +148,28 @@ class DetailsRoomView(View):
 class SearchRoomView(View):
 
     def get(self, request, message_2=None, *args, **kwargs):
+        name = request.GET.get('name')
         capacity = request.GET.get('capacity')
         projector = request.GET.get('projector')
 
         conference_rooms = Room.objects.all()
-        rooms = []
+        if projector == 'on':
+            conference_rooms = conference_rooms.filter(projector=True)
+        if capacity:
+            conference_rooms = conference_rooms.filter(capacity__gte=capacity)
+        if name:
+            conference_rooms = conference_rooms.filter(name__contains=name)
+
         for room in conference_rooms:
             booking_dates = [booking.date_of_booking for booking in room.booking_set.all()]
             room.reserved = date.today() in booking_dates
-            if room.reserved is False:
-                if capacity != '':
-                    if room.capacity >= int(capacity):
-                        if projector == 'on':
-                            if room.projector is True:
-                                rooms.append(room)
 
         if not conference_rooms:
             message = 'Brak dostępnych sal'
         else:
             message = 'Lista sal konferencyjnych'
         context = {
-            'conference_rooms': rooms,
+            'conference_rooms': conference_rooms,
             'message': message,
             'message_2': message_2,
         }
